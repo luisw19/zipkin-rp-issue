@@ -1,4 +1,4 @@
-# zipkin-rp-issue
+# zipkin-js RP Instrumentation Issue
 
 This project reproduces an issue when instrumenting request-promise using [zipkin-js](https://github.com/openzipkin/zipkin-js) and [zipkin-instrumentation-request-promise](https://github.com/openzipkin/zipkin-js/tree/master/packages/zipkin-instrumentation-request-promise).
 
@@ -14,8 +14,43 @@ In short, the issue is that the *span* generated for the slowest call by the ins
 
 Follow this steps to reproduce the error:
 
-1. Start up the local environment containing *zipkin* and the *backend httpbin service* using `docker-compose` as following.
+1. Clone the project:
 
-```bash
-docker-compose up -d
-```
+    ```bash
+    git clone https://github.com/luisw19/zipkin-rp-issue.git
+    ```
+
+2. `cd` into the project folder and install all node dependencies:
+
+    ```bash
+    cd zipkin-rp-issue
+    npm install
+    ```
+
+3. Start up the local environment with `docker-compose` as following.
+
+    ```bash
+    docker-compose up -d
+    ```
+
+    > Docker-compose will start the *zipkin* containers as well as a backend *httpbin* service.
+
+4. Start the node server.
+
+    ```bash
+    npm start
+    ```
+
+5. On a separate shell execute all of the following commands at once:
+
+    ```bash
+    curl -X POST localhost:3000/resource -d '{"some":"value"}' -H "Content-Type: application/json"
+    sleep 2
+    curl localhost:3000/resource
+    ```
+
+    > this step assumes `curl` is already installed.
+
+6. Open the `zipkin-ui` in a browser by entering the following URL <http://localhost:9411/zipkin>
+
+7. Click search and notice that there are two traces. One with a single span and the other one with three. This is because the wrong `parentId` was assigned to the `POST` backend `target-a` service call.
