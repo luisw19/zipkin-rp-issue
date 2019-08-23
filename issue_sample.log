@@ -1,18 +1,18 @@
 [2019-08-22T15:57:39.327Z] INFO service: recording: 1000000000000001/7b2794775428902f ServiceName("service")
 [2019-08-22T15:57:39.327Z] INFO service: recording: 1000000000000001/7b2794775428902f Rpc("POST")
-[2019-08-22T15:57:39.328Z] INFO service: recording: 1000000000000001/7b2794775428902f BinaryAnnotation(http.path="/service/")
+[2019-08-22T15:57:39.328Z] INFO service: recording: 1000000000000001/7b2794775428902f BinaryAnnotation(http.path="/resource/")
 [2019-08-22T15:57:39.328Z] INFO service: recording: 1000000000000001/7b2794775428902f ServerRecv()
 [2019-08-22T15:57:39.328Z] INFO service: recording: 1000000000000001/7b2794775428902f LocalAddr(host="InetAddress(192.168.15.2)", port=0)
 
 [2019-08-22T15:57:40.934Z] INFO service: recording: 1000000000000002/5c43e46af8996203 ServiceName("service")
 [2019-08-22T15:57:40.934Z] INFO service: recording: 1000000000000002/5c43e46af8996203 Rpc("GET")
-[2019-08-22T15:57:40.934Z] INFO service: recording: 1000000000000002/5c43e46af8996203 BinaryAnnotation(http.path="/service/f562261c-2f99-48b8-b661-43dc2113dcdf/")
+[2019-08-22T15:57:40.934Z] INFO service: recording: 1000000000000002/5c43e46af8996203 BinaryAnnotation(http.path="/resource/f562261c-2f99-48b8-b661-43dc2113dcdf/")
 [2019-08-22T15:57:40.934Z] INFO service: recording: 1000000000000002/5c43e46af8996203 ServerRecv()
 [2019-08-22T15:57:40.934Z] INFO service: recording: 1000000000000002/5c43e46af8996203 LocalAddr(host="InetAddress(192.168.15.2)", port=0)
 
 [2019-08-22T15:57:40.935Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e ServiceName("service")
 [2019-08-22T15:57:40.935Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e Rpc("GET")
-[2019-08-22T15:57:40.935Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e BinaryAnnotation(http.path="/service/f562261c-2f99-48b8-b661-43dc2113dcdf/")
+[2019-08-22T15:57:40.935Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e BinaryAnnotation(http.path="/resource/f562261c-2f99-48b8-b661-43dc2113dcdf/")
 [2019-08-22T15:57:40.935Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e ClientSend()
 [2019-08-22T15:57:40.935Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e ServerAddr(serviceName="target-a", host="undefined", port=0)
 [2019-08-22T15:57:41.000Z] INFO service: recording: 1000000000000002/c9858570fddf3d1e BinaryAnnotation(http.status_code="200")
@@ -32,19 +32,19 @@
       "serviceName":"target-a"
     },
     "tags": {
-      "http.path":"/service/f562261c-2f99-48b8-b661-43dc2113dcdf/",
+      "http.path":"/resource/f562261c-2f99-48b8-b661-43dc2113dcdf/",
       "http.status_code":"200"
     }
   }
 
-[2019-08-22T15:57:41.024Z] INFO service: recording: 1000000000000002/5c43e46af8996203 Rpc("GET /service/*")
+[2019-08-22T15:57:41.024Z] INFO service: recording: 1000000000000002/5c43e46af8996203 Rpc("GET /resource/*")
 [2019-08-22T15:57:41.024Z] INFO service: recording: 1000000000000002/5c43e46af8996203 BinaryAnnotation(http.status_code="200")
 [2019-08-22T15:57:41.024Z] INFO service: recording: 1000000000000002/5c43e46af8996203 ServerSend()
 [2019-08-22T15:57:41.028Z] INFO service: reporting: {
     "traceId":"1000000000000002",
     "parentId":"1000000000000002",
     "id":"5c43e46af8996203",
-    "name":"get /service/*",
+    "name":"get /resource/*",
     "kind":"SERVER",
     "timestamp":1566489460933144,
     "duration":90048,
@@ -53,7 +53,7 @@
       "ipv4":"192.168.15.2"
     },
     "tags": {
-      "http.path":"/service/f562261c-2f99-48b8-b661-43dc2113dcdf/",
+      "http.path":"/resource/f562261c-2f99-48b8-b661-43dc2113dcdf/",
       "http.status_code":"200"
     },
     "shared":true
@@ -61,7 +61,7 @@
   
 [2019-08-22T15:57:41.845Z] INFO service: recording: 1000000000000002/2b371c225fb54260 ServiceName("service")
 [2019-08-22T15:57:41.846Z] INFO service: recording: 1000000000000002/2b371c225fb54260 Rpc("POST")
-[2019-08-22T15:57:41.846Z] INFO service: recording: 1000000000000002/2b371c225fb54260 BinaryAnnotation(http.path="/service/f562261c-2f99-48b8-b661-43dc2113dcdf/")
+[2019-08-22T15:57:41.846Z] INFO service: recording: 1000000000000002/2b371c225fb54260 BinaryAnnotation(http.path="/resource/f562261c-2f99-48b8-b661-43dc2113dcdf/")
 [2019-08-22T15:57:41.846Z] INFO service: recording: 1000000000000002/2b371c225fb54260 ClientSend()
 [2019-08-22T15:57:41.846Z] INFO service: recording: 1000000000000002/2b371c225fb54260 ServerAddr(serviceName="target-b", host="undefined", port=0)
 [2019-08-22T15:57:41.907Z] INFO service: recording: 1000000000000002/2b371c225fb54260 BinaryAnnotation(http.status_code="200")
@@ -80,19 +80,19 @@
     "serviceName":"target-b"
   },
   "tags": {
-    "http.path":"/service/f562261c-2f99-48b8-b661-43dc2113dcdf/",
+    "http.path":"/resource/f562261c-2f99-48b8-b661-43dc2113dcdf/",
     "http.status_code":"200"
   }
 }
 
-[2019-08-22T15:57:41.913Z] INFO service: recording: 1000000000000001/7b2794775428902f Rpc("POST /service/*")
+[2019-08-22T15:57:41.913Z] INFO service: recording: 1000000000000001/7b2794775428902f Rpc("POST /resource/*")
 [2019-08-22T15:57:41.913Z] INFO service: recording: 1000000000000001/7b2794775428902f BinaryAnnotation(http.status_code="200")
 [2019-08-22T15:57:41.914Z] INFO service: recording: 1000000000000001/7b2794775428902f ServerSend()
 [2019-08-22T15:57:41.915Z] INFO service: reporting: {
   "traceId":"1000000000000001",
   "parentId":"1000000000000001",
   "id":"7b2794775428902f",
-  "name":"post /service/*",
+  "name":"post /resource/*",
   "kind":"SERVER",
   "timestamp":1566489459326938,
   "duration":2585817,
@@ -101,7 +101,7 @@
     "ipv4":"192.168.15.2"
   },
   "tags": {
-    "http.path":"/service/",
+    "http.path":"/resource/",
     "http.status_code":"200"
   },
   "shared":true

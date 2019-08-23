@@ -11,8 +11,7 @@ services:
     - 8080:80
 
   storage:
-    # image: openzipkin/zipkin-mysql
-    image: cne-repos1.us.oracle.com:7744/apps/hgbu/hgbu-hdp/zipkin-mysql:v2.15.0
+    image: openzipkin/zipkin-mysql
     container_name: mysql
     # Uncomment to expose the storage port for testing
     ports:
@@ -27,8 +26,7 @@ services:
   # The zipkin process services the UI, and also exposes a POST endpoint that
   # instrumentation can send trace data to. Scribe is disabled by default.
   zipkin:
-    # image: openzipkin/zipkin
-    image: cne-repos1.us.oracle.com:7744/apps/hgbu/hgbu-hdp/zipkin:v2.15.0
+    image: openzipkin/zipkin
     container_name: zipkin
     # Environment settings are defined here https://github.com/apache/incubator-zipkin/blob/master/zipkin-server/README.md#environment-variables
     environment:
@@ -62,8 +60,7 @@ services:
   #
   # For more details, see https://github.com/openzipkin/docker-zipkin-dependencies
   dependencies:
-    # image: openzipkin/zipkin-dependencies
-    image: cne-repos1.us.oracle.com:7744/apps/hgbu/hgbu-hdp/zipkin-dependencies:v2.15.0
+    image: openzipkin/zipkin-dependencies
     container_name: dependencies
     entrypoint: crond -f
     environment:
