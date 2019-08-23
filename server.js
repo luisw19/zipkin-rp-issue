@@ -1,11 +1,13 @@
 const express     =   require("express");
 const server      =   express();
-const bodyParser  =   require("body-parser");
 const router      =   express.Router();
+const bodyParser  =   require("body-parser");
+
 
 /////////////////////////////// Common
-PORT = 3000;
-TARGET = "http://localhost:8080/anything";
+const PORT = 3000;
+const TARGET = "http://localhost:8080/anything";
+const SLEEPTIME = 5000;
 
 /////////////////////////////// Zipkin
 const localServiceName = "service";
@@ -32,7 +34,6 @@ const httpLogger = new HttpLogger({
 // This is a hack that lets you see the data sent to Zipkin!
 
 function recorder() {
-
   const logger = {
     logSpan: (span) => {
       const json = JSON_V2.encode(span);
@@ -40,9 +41,7 @@ function recorder() {
       httpLogger.logSpan(span);
     }
   };
-
   const batchRecorder = new BatchRecorder({logger});
-
   // This is a hack that lets you see which annotations become which spans
   return ({
     record: (rec) => {
@@ -67,40 +66,79 @@ server.use( zipkinMiddleware({tracer}) );
 
 /////////////////////////////// Invoker
 class Invoker {
+    static instance;
     constructor(){}
+
+    static getInstance() {
+        //instantiate once and only one to implement the singleton pattern
+        if (!Invoker.instance) {
+          Invoker.instance = new Invoker();
+        }
+        return Invoker.instance;
+    }
     
-    async call(url, options){
+    async call(url, options) {
         //prepare the zipkin request-promise wrapper
         let remoteServiceName = url.split("/")[2].split(":")[0];
         let request = new wrapRequest(tracer, remoteServiceName);
-        options.json = true;
         console.log("calling : " + url + " with options: " + JSON.stringify(options));
+
         return await request(url, options);
     }
-}
-  
-const invoker = new Invoker();
 
+    async sleep(ms) {
+        return await new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+}
+const invoker = Invoker.getInstance();
 
 /////////////////////////////// Routes
 router.get("/",function(req,res){
-    //set the call options
-    let options = {
-        method: req.method,
-        headers: req.headers
-      };
-    res.json( invoker.call(TARGET, options) );
+    res.json({"message" : "Hello World"});
 });
 
-router.post("/",function(req,res){
-    //set the call options
-    let options = {
-        method: req.method,
-        headers: req.headers,
-        body: req.body
-      };
-    res.json( invoker.call(TARGET, options) );
-});
+router.route("/resource")
 
+    .get(function(req,res){
+        console.log('processing call: ', req);
+        //set the call options
+        let options = {
+            method: req.method,
+            headers: req.headers,
+            json: true
+        };
+        invoker.call(TARGET, options)
+            .then(function(body) {
+                    //return body;
+                    res.json( body );
+                    //return;
+                }
+            );
+    })
+
+    .post(function(req,res){
+        console.log('processing call: ', req);
+        //set the call options
+        let options = {
+            method: req.method,
+            headers: req.headers,
+            json: true,
+            body: req.body
+        };
+
+        // now we wait for TIMEOUT ms
+        console.log(`sleeping for ${SLEEPTIME}ms}`);
+        invoker.sleep(SLEEPTIME).then(function(){
+            console.log(`finished sleeping`);
+            invoker.call(TARGET, options).then(function(body) {
+                //return body;
+                res.json( body );
+            });
+        });
+
+    });
+
+server.use('/',router);
 server.listen(PORT);
 console.log(`Listening to PORT ${PORT}`);
