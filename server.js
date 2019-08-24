@@ -6,8 +6,10 @@ const bodyParser  =   require("body-parser");
 
 /////////////////////////////// Service
 const PORT = 4000;
-const TARGET = "http://localhost:8080/anything";
-const TARGET_NAME = "target-a";
+const TARGET_A = "http://localhost:8080/anything";
+const TARGET_B = "http://localhost:8080/anything";
+const TARGET_NAME_A = "target-a";
+const TARGET_NAME_B = "target-b";
 const SLEEPTIME = 5000;
 const RESOURCE = "/resource/*";
 
@@ -120,7 +122,7 @@ class Controller {
         return await new Promise(resolve => setTimeout(resolve, ms));
     }
     
-    async route(url, target, method, headers, body, sleeptime) {
+    async route(url, targetService, method, headers, body, sleeptime) {
         console.log(`processing [${method}] ${url}`);
         //set the call options
         let options = {
@@ -142,7 +144,7 @@ class Controller {
             }
 
             default: {
-                return await this.invoker.call(url, target, options);
+                return await this.invoker.call(url, targetService, options);
             }
 
         }
@@ -152,7 +154,7 @@ class Controller {
 }
 
 /////////////////////////////// Routes
-// let controller = Controller.getInstance();
+const controller = Controller.getInstance();
 
 router.get("/",function(req,res){
     res.json({"status" : "UP"});
@@ -161,9 +163,8 @@ router.get("/",function(req,res){
 router.route(RESOURCE)
     .get(async function(req,res){
 
-        let controller = Controller.getInstance();
-        let url = TARGET;
-        let targetService = TARGET_NAME;
+        let url = TARGET_A;
+        let targetService = TARGET_NAME_A;
 
         // to reproduce the issue we need to simulate an instrumented service calling another
         // for this we just make the service call itself only once by checking a custom header
@@ -187,9 +188,8 @@ router.route(RESOURCE)
     
     .post(async function(req,res){
 
-        let controller = Controller.getInstance();
-        let url = TARGET;
-        let targetService = TARGET_NAME;
+        let url = TARGET_B;
+        let targetService = TARGET_NAME_B;
         let delay = SLEEPTIME;
 
         // to reproduce the issue we need to simulate an instrumented service calling another
