@@ -36,7 +36,6 @@ const httpLogger = new HttpLogger({
 });
 
 // This is a hack that lets you see the data sent to Zipkin!
-
 function recorder() {
   const logger = {
     logSpan: (span) => {
