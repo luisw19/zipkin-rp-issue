@@ -7,7 +7,7 @@ const bodyParser  =   require("body-parser");
 /////////////////////////////// Service
 const PORT = 4000;
 const TARGET_A = "http://localhost:8080/anything";
-const TARGET_B = "http://localhost:8080/anything";
+const TARGET_B = "http://127.0.0.1:8080/anything";
 const TARGET_NAME_A = "target-a";
 const TARGET_NAME_B = "target-b";
 const SLEEPTIME = 5000;
