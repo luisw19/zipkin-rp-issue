@@ -133,9 +133,12 @@ class Controller {
         switch(method){
         
             case "POST" : {
-                // now we wait for TIMEOUT ms
-                console.log(`sleeping for ${sleeptime}ms`);
-                await this.sleep(sleeptime);
+                // now we wait for sleeptime ms (if > 0)
+                if(sleeptime>0){
+                    console.log(`sleeping for ${sleeptime}ms`);
+                    await this.sleep(sleeptime);
+                }
+
             }
 
             default: {
@@ -157,26 +160,57 @@ router.get("/",function(req,res){
 
 router.route(RESOURCE)
     .get(async function(req,res){
+
         let controller = Controller.getInstance();
+        let url = TARGET;
+        let targetService = TARGET_NAME;
+
+        // to reproduce the issue we need to simulate an instrumented service calling another
+        // for this we just make the service call itself only once by checking a custom header
+        if(!req.headers["x-call-count"]){
+            req.headers["x-call-count"]=1;
+            //console.log(req);
+            url = "http://" + req.headers.host + req.url;
+            targetService = "self";
+        }
+
         try{
-            let response = await controller.route(TARGET, TARGET_NAME, req.method, req.headers, req.body, null);
+            let response = await controller.route(url, targetService, req.method, req.headers, req.body, null);
             res.json(response);
         }
         catch (err) {
             res.json({"error":err.message});
             throw new Error(err.message);
         }
+
     })
+    
     .post(async function(req,res){
+
         let controller = Controller.getInstance();
+        let url = TARGET;
+        let targetService = TARGET_NAME;
+        let delay = SLEEPTIME;
+
+        // to reproduce the issue we need to simulate an instrumented service calling another
+        // for this we just make the service call itself only once by checking a custom header
+        if(!req.headers["x-call-count"]){
+            req.headers["x-call-count"]=1;
+            //console.log(req);
+            url = "http://" + req.headers.host + req.url;
+            targetService = "self";
+            delay = 0;
+        }
+
         try{
-            let response = await controller.route(TARGET, TARGET_NAME, req.method, req.headers, req.body, SLEEPTIME);
+            let response = await controller.route(url, targetService, req.method, req.headers, req.body, delay);
             res.json(response);
         }
         catch (err) {
             res.json({"error":err.message});
             throw new Error(err.message);
         }
+
     });
 
 server.use('/',router);
